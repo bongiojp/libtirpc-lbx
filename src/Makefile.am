@@ -9,7 +9,7 @@
 INCLUDES = -I$(top_srcdir)/tirpc -DPORTMAP -DINET6 -DVERSION="\"$(VERSION)\"" \
 		-D_GNU_SOURCE -Wall -pipe  
 
-lib_LTLIBRARIES = libtirpc.la
+noinst_LTLIBRARIES = libtirpc.la
 
 #
 # Set the library version information
