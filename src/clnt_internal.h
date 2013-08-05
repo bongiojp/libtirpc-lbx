@@ -141,10 +141,20 @@ struct ct_data {
     struct ct_wait_entry ct_sync; /* wait for completion */
 };
 
+struct cm_data {
+  msk_trans_t       *trans; /* connection's "fd" since it's not an int... */
+  bool_tcm_closeit; /* close it on destroy */
+  struct timevalcm_wait; /* wait interval in milliseconds */
+  XDR cm_xdrs;
+  //add a lastreceive?
+  char *buffers;
+};
+
 enum CX_TYPE
 {
     CX_DG_DATA,
-    CX_VC_DATA
+    CX_VC_DATA,
+    CX_MSK_DATA
 };
 
 #define X_VC_DATA_FLAG_NONE             0x0000
@@ -176,6 +186,7 @@ struct cx_data
     union {
         struct cu_data cu;
         struct ct_data ct;
+        struct cm_data cm;
     } c_u;
     int cx_fd; /* connection's fd */
     struct rpc_dplx_rec *cx_rec; /* unified sync */
@@ -209,6 +220,7 @@ struct x_vc_data
 
 #define CU_DATA(cx) (& (cx)->c_u.cu)
 #define CT_DATA(cx) (& (cx)->c_u.ct)
+#define CM_DATA(cx) (& (cx)->c_u.cm)
 
 /* compartmentalize a bit */
 static inline struct x_vc_data *
@@ -235,6 +247,8 @@ alloc_cx_data(enum CX_TYPE type, uint32_t sendsz, uint32_t recvsz)
         cx->c_u.cu.cu_outbuf = mem_alloc(sendsz);
     case CX_VC_DATA:
         break;
+    case CX_MSK_DATA:
+        break;
     default:
         /* err */
         __warnx(TIRPC_DEBUG_FLAG_MEM,
@@ -253,6 +267,8 @@ free_cx_data(struct cx_data *cx)
         mem_free(cx->c_u.cu.cu_inbuf, cx->c_u.cu.cu_recvsz);
         mem_free(cx->c_u.cu.cu_outbuf, cx->c_u.cu.cu_sendsz);
     case CX_VC_DATA:
+        break;
+    case CX_MSK_DATA:
         break;
     default:
         /* err */
