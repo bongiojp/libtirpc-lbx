@@ -5,6 +5,8 @@ if(TIRPC_EPOLL)
   add_definitions(-DTIRPC_EPOLL)
 endif(TIRPC_EPOLL)
 
+set(MSK_DUMP_FRAGMENTS 1)
+
 include_directories(
   "${PROJECT_BINARY_DIR}/include"
   "${PROJECT_SOURCE_DIR}/libntirpc/tirpc/"

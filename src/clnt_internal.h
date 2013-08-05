@@ -145,9 +145,15 @@ struct cm_data {
   msk_trans_t       *trans; /* connection's "fd" since it's not an int... */
   bool_tcm_closeit; /* close it on destroy */
   struct timevalcm_wait; /* wait interval in milliseconds */
+
   XDR cm_xdrs;
+  struct timeval cm_total;  /* total time for the call */
+  struct rpc_err cm_error;
+  u_int cm_xdrpos;
+  struct rpc_msg call_msg;
+  
   //add a lastreceive?
-  char *buffers;
+  // add an async?
 };
 
 enum CX_TYPE
