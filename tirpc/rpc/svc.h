@@ -639,8 +639,6 @@ extern SVCXPRT *svc_vc_ncreate2(const int, const u_int, const u_int,
  *      const u_int flags;                      -- flags
  */
 
-extern SVCXPRT *svc_msk_create(msk_trans_t*, u_int, void (*)(void*), void*);
-
 __END_DECLS
 
 #define SVC_VC_CREATE_NONE             0x0000
